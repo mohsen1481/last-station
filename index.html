@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>آخرین ایستگاه — Last Station</title>
+    <meta name="description" content="بازی تیراندازی اول‌شخص ترسناک در ایستگاه مترو: موج‌های زامبی، هدشات، سه اسلحه و گرافیک واقع‌گرایانه." />
+    <meta property="og:title" content="Last Station — آخرین ایستگاه" />
+    <meta property="og:description" content="A photoreal horror wave shooter in an abandoned metro station. Headshots, three weapons, endless zombie waves." />
+    <meta property="og:image" content="./assets/menu_bg.jpg" />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" href="./favicon.png" />
+    <link rel="stylesheet" href="style.css" />
+    <script type="importmap">
+      { "imports": { "three": "./vendor/three.module.min.js"", "three/addons/": "./vendor/addons/" } }
+    </script>
+  </head>
+  <body>
+    <canvas id="game"></canvas>
+
+    <div id="hud" class="hidden">
+      <div id="crosshair"><i></i><i></i><i></i><i></i><b></b></div>
+      <div id="hitmarker"></div>
+      <div id="scope-dim"></div>
+
+      <div class="hud-box" id="hud-wave">
+        <span class="label" data-t="wave"></span>
+        <span class="big" id="wave-n"></span>
+        <span class="sub"><span data-t="remaining"></span> <b id="wave-left"></b></span>
+      </div>
+      <div class="hud-box" id="hud-score">
+        <span class="label" data-t="score"></span>
+        <span class="big" id="score-n"></span>
+        <span class="sub"><span data-t="kills"></span> <b id="kills-n"></b></span>
+      </div>
+
+      <div class="hud-box" id="hud-health">
+        <span class="label" data-t="health"></span>
+        <div class="bar"><div id="health-fill"></div></div>
+        <span class="big" id="health-n"></span>
+      </div>
+      <div class="hud-box" id="hud-ammo">
+        <span class="label" id="weapon-name"></span>
+        <span class="big"><span id="ammo-mag"></span><small> / <span id="ammo-res"></span></small></span>
+        <div id="weapon-slots"></div>
+      </div>
+
+      <div id="banner"><div id="banner-title"></div><div id="banner-sub"></div></div>
+      <div id="hint"></div>
+      <div id="toasts"></div>
+      <div id="dev" class="hidden"></div>
+    </div>
+
+    <div id="loading" class="screen">
+      <div class="panel center">
+        <h1 class="title" data-t="title"></h1>
+        <p class="tag" data-t="loading"></p>
+        <div class="bar wide"><div id="load-fill"></div></div>
+        <p class="tag small" id="load-msg"></p>
+      </div>
+    </div>
+
+    <div id="menu" class="screen hidden">
+      <div class="panel">
+        <h1 class="title" data-t="title"></h1>
+        <p class="tag" data-t="tagline"></p>
+        <div class="record"><span data-t="record"></span> <b id="menu-record"></b></div>
+        <button class="btn primary" id="btn-start" data-t="start"></button>
+        <button class="btn" id="btn-settings" data-t="settings"></button>
+        <button class="btn" id="btn-help" data-t="help"></button>
+      </div>
+    </div>
+
+    <div id="pause" class="screen hidden">
+      <div class="panel">
+        <h2 data-t="paused"></h2>
+        <button class="btn primary" id="btn-resume" data-t="resume"></button>
+        <button class="btn" id="btn-restart" data-t="restart"></button>
+        <button class="btn" id="btn-settings2" data-t="settings"></button>
+        <button class="btn" id="btn-quit" data-t="mainMenu"></button>
+      </div>
+    </div>
+
+    <div id="settings" class="screen hidden">
+      <div class="panel wide">
+        <h2 data-t="settings"></h2>
+        <label><span data-t="sens"></span><input type="range" id="set-sens" min="0.2" max="3" step="0.05" /><output id="out-sens"></output></label>
+        <label><span data-t="volMaster"></span><input type="range" id="set-master" min="0" max="1" step="0.01" /><output id="out-master"></output></label>
+        <label><span data-t="volMusic"></span><input type="range" id="set-music" min="0" max="1" step="0.01" /><output id="out-music"></output></label>
+        <label><span data-t="volSfx"></span><input type="range" id="set-sfx" min="0" max="1" step="0.01" /><output id="out-sfx"></output></label>
+        <label><span data-t="quality"></span>
+          <select id="set-quality">
+            <option value="low" data-t="qLow"></option>
+            <option value="medium" data-t="qMedium"></option>
+            <option value="high" data-t="qHigh"></option>
+            <option value="ultra" data-t="qUltra"></option>
+          </select><output></output>
+        </label>
+        <label><span data-t="fov"></span><input type="range" id="set-fov" min="60" max="95" step="1" /><output id="out-fov"></output></label>
+        <label class="check"><span data-t="shake"></span><input type="checkbox" id="set-shake" /><output></output></label>
+        <label class="check"><span data-t="blood"></span><input type="checkbox" id="set-blood" /><output></output></label>
+        <button class="btn primary" id="btn-settings-back" data-t="back"></button>
+      </div>
+    </div>
+
+    <div id="help" class="screen hidden">
+      <div class="panel wide">
+        <h2 data-t="help"></h2>
+        <ul id="help-list"></ul>
+        <button class="btn primary" id="btn-help-back" data-t="back"></button>
+      </div>
+    </div>
+
+    <div id="over" class="screen hidden">
+      <div class="panel">
+        <h2 class="dead" data-t="dead"></h2>
+        <p class="tag" id="over-record"></p>
+        <table>
+          <tr><td data-t="wave"></td><td id="o-wave"></td></tr>
+          <tr><td data-t="kills"></td><td id="o-kills"></td></tr>
+          <tr><td data-t="headshots"></td><td id="o-heads"></td></tr>
+          <tr><td data-t="accuracy"></td><td id="o-acc"></td></tr>
+          <tr><td data-t="score"></td><td id="o-score"></td></tr>
+        </table>
+        <button class="btn primary" id="btn-again" data-t="again"></button>
+        <button class="btn" id="btn-over-menu" data-t="mainMenu"></button>
+      </div>
+    </div>
+
+    <div id="fatal" class="screen hidden"><div class="panel center"><h2 data-t="errTitle"></h2><p class="tag" id="fatal-msg"></p></div></div>
+
+    <script type="module" src="client.js"></script>
+  </body>
+</html>
