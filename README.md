@@ -1,5 +1,7 @@
 # Last Station — آخرین ایستگاه
 
+**Built with Opus 5.5 — ساخته‌شده با Opus 5.5**
+
 A photoreal horror wave shooter in an abandoned metro station. The train no longer moves — they come from the darkness of the tunnel.
 
 یک بازی تیراندازی اول‌شخص ترسناک در یک ایستگاه متروی متروکه. قطار دیگر حرکت نمی‌کند — آن‌ها از تاریکی تونل می‌آیند.
@@ -88,5 +90,3 @@ game/               main.js, world.js, zombies.js, weapons.js, audio.js, effects
 assets/             Audio, 3D models (.glb) and textures
 vendor/             Three.js + addons + Vazirmatn font
 ```
-
-Built with Opus 5.5.
