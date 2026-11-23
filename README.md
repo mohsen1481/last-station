@@ -1,6 +1,6 @@
 # Last Station — آخرین ایستگاه
 
-**Built with Opus 5.5 — ساخته‌شده با Opus 5.5**
+**Built with Fable 5.2 — ساخته‌شده با Fable 5.2**
 
 A photoreal horror wave shooter in an abandoned metro station. The train no longer moves — they come from the darkness of the tunnel.
 
