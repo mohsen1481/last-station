@@ -90,3 +90,9 @@ game/               main.js, world.js, zombies.js, weapons.js, audio.js, effects
 assets/             Audio, 3D models (.glb) and textures
 vendor/             Three.js + addons + Vazirmatn font
 ```
+
+## License — لایسنس
+
+This project is licensed under the MIT License — see the [LICENSE](LICENSE) file.
+
+این پروژه تحت لایسنس MIT منتشر شده است — فایل [LICENSE](LICENSE) را ببینید.
